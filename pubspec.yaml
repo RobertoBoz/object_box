@@ -1,0 +1,37 @@
+name: object_box
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.6
+  objectbox: ^1.6.0
+  objectbox_flutter_libs: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.0.0
+  objectbox_generator: any
+
+objectbox:
+  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).  
+  # Or optionally specify the lib and test output folder separately.
+  output_dir:
+    lib: lib/data/
+  #   test: other
+
+
+flutter:
+  uses-material-design: true
