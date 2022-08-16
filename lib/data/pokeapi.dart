@@ -9,6 +9,8 @@ class PokeApi {
       int i = 0;
       for (final result in list.data['results']){
 
+        
+
         final pokemon = await DioSingleton.dio.get(result[i]['url']);
       
         i++;

@@ -3,11 +3,13 @@
 //     final pokemon = pokemonFromMap(jsonString);
 import 'dart:convert';
 
+import 'package:object_box/data/model/spritns.dart';
 import 'package:objectbox/objectbox.dart';
 
 Pokemon pokemonFromMap(String str) => Pokemon.fromMap(json.decode(str));
 
 String pokemonToMap(Pokemon data) => json.encode(data.toMap());
+
 @Entity()
 class Pokemon {
     Pokemon({
@@ -16,11 +18,14 @@ class Pokemon {
        required this.height,
        required this.weight,
     });
-
+    @Id(assignable: true)
     int id;
     final String name;
     final int height;
-    final int weight;
+    final int weight;    
+    final sprites = ToOne<Sprites>();
+
+    
 
     Pokemon copyWith({
         int? id,
@@ -34,6 +39,7 @@ class Pokemon {
             height: height ?? this.height,
             weight: weight ?? this.weight,
         );
+       
 
     factory Pokemon.fromMap(Map<String, dynamic> json) => Pokemon(
         id: json["Id"],
@@ -51,3 +57,4 @@ class Pokemon {
  
 
 }
+

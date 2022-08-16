@@ -14,35 +14,77 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../data/model/pokemon.dart';
+import '../data/model/spritns.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 7545210402204976770),
+      id: const IdUid(1, 5135515709983664815),
       name: 'Pokemon',
-      lastPropertyId: const IdUid(4, 2020811643458707898),
+      lastPropertyId: const IdUid(5, 5221234231710865251),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 745291615036854303),
+            id: const IdUid(1, 3428202046078917551),
             name: 'id',
             type: 6,
-            flags: 1),
+            flags: 129),
         ModelProperty(
-            id: const IdUid(2, 3253391000134144020),
+            id: const IdUid(2, 6345479541958473201),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 7953941750602416387),
+            id: const IdUid(3, 4276029722686430030),
             name: 'height',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 2020811643458707898),
+            id: const IdUid(4, 2427360219335032136),
             name: 'weight',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 5221234231710865251),
+            name: 'spritesId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(1, 4950746390785174059),
+            relationTarget: 'Sprites')
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 4342362827715687372),
+      name: 'Sprites',
+      lastPropertyId: const IdUid(5, 6113080172276890815),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 3855134785950599754),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5616193039470317098),
+            name: 'backDefault',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 7259379112836127443),
+            name: 'frontDefault',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 3531186202885305091),
+            name: 'backShiny',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 6113080172276890815),
+            name: 'frontShiny',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -69,8 +111,8 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 7545210402204976770),
-      lastIndexId: const IdUid(0, 0),
+      lastEntityId: const IdUid(2, 4342362827715687372),
+      lastIndexId: const IdUid(1, 4950746390785174059),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
@@ -84,7 +126,7 @@ ModelDefinition getObjectBoxModel() {
   final bindings = <Type, EntityDefinition>{
     Pokemon: EntityDefinition<Pokemon>(
         model: _entities[0],
-        toOneRelations: (Pokemon object) => [],
+        toOneRelations: (Pokemon object) => [object.sprites],
         toManyRelations: (Pokemon object) => {},
         getId: (Pokemon object) => object.id,
         setId: (Pokemon object, int id) {
@@ -92,11 +134,12 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Pokemon object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addInt64(2, object.height);
           fbb.addInt64(3, object.weight);
+          fbb.addInt64(4, object.sprites.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -112,6 +155,47 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
               weight:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
+          object.sprites.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.sprites.attach(store);
+          return object;
+        }),
+    Sprites: EntityDefinition<Sprites>(
+        model: _entities[1],
+        toOneRelations: (Sprites object) => [],
+        toManyRelations: (Sprites object) => {},
+        getId: (Sprites object) => object.id,
+        setId: (Sprites object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Sprites object, fb.Builder fbb) {
+          final backDefaultOffset = fbb.writeString(object.backDefault);
+          final frontDefaultOffset = fbb.writeString(object.frontDefault);
+          final backShinyOffset = fbb.writeString(object.backShiny);
+          final frontShinyOffset = fbb.writeString(object.frontShiny);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, backDefaultOffset);
+          fbb.addOffset(2, frontDefaultOffset);
+          fbb.addOffset(3, backShinyOffset);
+          fbb.addOffset(4, frontShinyOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Sprites(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              backDefault: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              frontDefault: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              backShiny: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              frontShiny: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''));
 
           return object;
         })
@@ -135,4 +219,30 @@ class Pokemon_ {
   /// see [Pokemon.weight]
   static final weight =
       QueryIntegerProperty<Pokemon>(_entities[0].properties[3]);
+
+  /// see [Pokemon.sprites]
+  static final sprites =
+      QueryRelationToOne<Pokemon, Sprites>(_entities[0].properties[4]);
+}
+
+/// [Sprites] entity fields to define ObjectBox queries.
+class Sprites_ {
+  /// see [Sprites.id]
+  static final id = QueryIntegerProperty<Sprites>(_entities[1].properties[0]);
+
+  /// see [Sprites.backDefault]
+  static final backDefault =
+      QueryStringProperty<Sprites>(_entities[1].properties[1]);
+
+  /// see [Sprites.frontDefault]
+  static final frontDefault =
+      QueryStringProperty<Sprites>(_entities[1].properties[2]);
+
+  /// see [Sprites.backShiny]
+  static final backShiny =
+      QueryStringProperty<Sprites>(_entities[1].properties[3]);
+
+  /// see [Sprites.frontShiny]
+  static final frontShiny =
+      QueryStringProperty<Sprites>(_entities[1].properties[4]);
 }

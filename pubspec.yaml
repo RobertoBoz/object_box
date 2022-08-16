@@ -16,20 +16,21 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
   objectbox: ^1.6.0
-  objectbox_flutter_libs: any
+  objectbox_flutter_libs: 
+  path_provider: 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   build_runner: ^2.0.0
-  objectbox_generator: any
+  objectbox_generator: 
 
 objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).  
   # Or optionally specify the lib and test output folder separately.
   output_dir:
-    lib: lib/data/
+    lib: /data
   #   test: other
 
 

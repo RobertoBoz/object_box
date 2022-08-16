@@ -4,37 +4,79 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:7545210402204976770",
-      "lastPropertyId": "4:2020811643458707898",
+      "id": "1:5135515709983664815",
+      "lastPropertyId": "5:5221234231710865251",
       "name": "Pokemon",
       "properties": [
         {
-          "id": "1:745291615036854303",
+          "id": "1:3428202046078917551",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:6345479541958473201",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:4276029722686430030",
+          "name": "height",
+          "type": 6
+        },
+        {
+          "id": "4:2427360219335032136",
+          "name": "weight",
+          "type": 6
+        },
+        {
+          "id": "5:5221234231710865251",
+          "name": "spritesId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:4950746390785174059",
+          "relationTarget": "Sprites"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4342362827715687372",
+      "lastPropertyId": "5:6113080172276890815",
+      "name": "Sprites",
+      "properties": [
+        {
+          "id": "1:3855134785950599754",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:3253391000134144020",
-          "name": "name",
+          "id": "2:5616193039470317098",
+          "name": "backDefault",
           "type": 9
         },
         {
-          "id": "3:7953941750602416387",
-          "name": "height",
-          "type": 6
+          "id": "3:7259379112836127443",
+          "name": "frontDefault",
+          "type": 9
         },
         {
-          "id": "4:2020811643458707898",
-          "name": "weight",
-          "type": 6
+          "id": "4:3531186202885305091",
+          "name": "backShiny",
+          "type": 9
+        },
+        {
+          "id": "5:6113080172276890815",
+          "name": "frontShiny",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "1:7545210402204976770",
-  "lastIndexId": "0:0",
+  "lastEntityId": "2:4342362827715687372",
+  "lastIndexId": "1:4950746390785174059",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
